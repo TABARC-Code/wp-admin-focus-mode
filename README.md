@@ -6,7 +6,7 @@
 
 This plugin lets me put specific roles into a simplified version of the WordPress admin.
 
-The idea is to give clients and non technical users a calmer environment. Fewer menu items, fewer scary options, less chance of "I clicked something and everything is broken now".
+The idea is to give clients and non technical users a calmer environment. Fewer menu items, fewer scary options, less chance of "I clicked something and everything is broken now". Basically if i touch it its going fuck up fix.
 
 I still keep full control as an admin. Focus mode only touches the users and roles I choose.
 
