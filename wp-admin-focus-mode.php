@@ -8,6 +8,7 @@
  * Author URI: https://github.com/TABARC-Code
  * License: GPL-3.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
+ * Text Domain: wp-admin-focus-mode
  *
  * Copyright (c) 2025 TABARC-Code
  * Original work by TABARC-Code.
@@ -185,19 +186,23 @@ class WP_Admin_Focus_Mode {
         // Roles config.
         $sanitized['roles'] = array();
 
+        if ( ! is_array( $input ) ) {
+            $input = array();
+        }
+
         if ( isset( $input['roles'] ) && is_array( $input['roles'] ) ) {
             foreach ( $input['roles'] as $role_key => $role_data ) {
                 $role_key = sanitize_key( $role_key );
 
-                if ( empty( $role_key ) ) {
+                if ( empty( $role_key ) || ! is_array( $role_data ) ) {
                     continue;
                 }
 
                 $enabled  = ! empty( $role_data['enabled'] );
                 $redirect = '';
-                if ( isset( $role_data['redirect'] ) ) {
+                if ( isset( $role_data['redirect'] ) && is_string( $role_data['redirect'] ) ) {
                     // I accept either relative admin paths or full URLs. I am not going to over police this.
-                    $redirect = trim( $role_data['redirect'] );
+                    $redirect = trim( sanitize_text_field( $role_data['redirect'] ) );
                 }
 
                 $sanitized['roles'][ $role_key ] = array(
@@ -211,7 +216,10 @@ class WP_Admin_Focus_Mode {
         $sanitized['allowed_menu_slugs'] = array();
         if ( isset( $input['allowed_menu_slugs'] ) && is_array( $input['allowed_menu_slugs'] ) ) {
             foreach ( $input['allowed_menu_slugs'] as $slug ) {
-                $slug = trim( (string) $slug );
+                if ( ! is_string( $slug ) ) {
+                    continue;
+                }
+                $slug = trim( wp_strip_all_tags( $slug ) );
                 if ( $slug === '' ) {
                     continue;
                 }
